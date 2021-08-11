@@ -8,4 +8,4 @@ $ 1_startup.sh
 $ 2_run.sh
 ```
 
-![WriteBehind demo](demo/WriteBehindDemo.gif)
+![WriteBehind demo](https://github.com/RedisGears/rgsync/raw/master/demo/WriteBehindDemo.gif)
