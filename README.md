@@ -21,7 +21,7 @@ from rgsync.Connectors import MySqlConnector, MySqlConnection
 '''
 Create MySQL connection object
 '''
-connection = MySqlConnection('demouser', 'Password123!', 'localhost:3306/test')
+connection = MySqlConnection('demouser', 'Password123!', 'mysql-server:3306/test')
 
 '''
 Create MySQL persons connector
