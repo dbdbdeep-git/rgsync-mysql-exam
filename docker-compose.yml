@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  mysql:
+    hostname: mysql
+    container_name: 'mysql'
+    image: 'mysql:latest'
+    labels: ['com.mysql.role=master']
+    environment:
+      MYSQL_ROOT_PASSWORD: root 
+      MYSQL_DATABASE: test
+      MYSQL_USER: demouser
+      MYSQL_PASSWORD: Password123! 
+#      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - '3306:3306'
+    command: mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+  redisgears:
+    hostname: redisgears
+    container_name: 'redisgears'
+    image: 'redislabs/redisgears:latest'
+    labels: ['com.redis.role=redisgears']
+    ports:
+      - '6379:6379'
+    command: redis-server --requirepass password --loadmodule /var/opt/redislabs/lib/modules/redisgears.so Plugin /var/opt/redislabs/modules/rg/plugin/gears_python.so
+    depends_on: [ mysql ]
+  gears-cli:
+    hostname: gears-cli
+    container_name: 'gears-cli'
+    image: gears-cli
+    build: 
+      context: gears-cli/.
+      dockerfile: Dockerfile
+    command: sh -c "gears-cli run --host redisgears --port 6379 --password password example.py --requirements requirements.txt; while true; do echo hello; sleep 200; done"
+    depends_on:
+        - redisgears
+        - mysql
+  
